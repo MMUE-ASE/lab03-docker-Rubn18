@@ -26,14 +26,14 @@
 #       Hint:  ubuntu:24.04
 #
 # YOUR INSTRUCTION HERE
-
+FROM ubuntu:24.04
 
 # D2 — Document who maintains the image (optional but good practice).
 #       Form:  LABEL key="value"
 #       Example: LABEL org.opencontainers.image.title="Lab 3 ARM builder"
 #
 # YOUR LABEL HERE
-
+LABEL org.opencontainers.image.title="Lab 3 ARM builder"
 
 # D3 — Install the toolchain in a SINGLE RUN instruction.
 #       You need three things from apt:
@@ -51,7 +51,12 @@
 #       and deleting /var/lib/apt/lists/* keep the image small.
 #
 # YOUR RUN INSTRUCTION HERE
-
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+    gcc-arm-none-eabi \
+    binutils-arm-none-eabi \
+    make \
+ && rm -rf /var/lib/apt/lists/*
 
 # D4 — Set the working directory inside the container.
 #       Every later command (and 'docker run') starts here. The host project will be
@@ -59,7 +64,7 @@
 #       Form:  WORKDIR /work
 #
 # YOUR WORKDIR HERE
-
+WORKDIR /work
 
 # D5 — Set the default command.
 #       When the container is run with no command, build the firmware.
@@ -68,3 +73,4 @@
 #        overrides this default.)
 #
 # YOUR CMD HERE
+CMD ["make", "all"]
